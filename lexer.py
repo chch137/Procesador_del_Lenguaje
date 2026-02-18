@@ -41,7 +41,6 @@ reserved_map = {r.lower(): r for r in reserved}
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
-t_DIVIDE = r'/'
 
 t_AND = r'&&'
 t_OR = r'\|\|'
@@ -66,12 +65,12 @@ t_SEMICOLON = r';'
 t_ignore = ' \t'
 
 
-def t_comment_single(t):
-    r'//[^\n]*'
-    pass
-
-def t_comment_multi(t):
-    r'/\*[\s\S]*?\*/'
+def t_DIVIDE_OR_COMMENT(t):
+    r'/\*[\s\S]*?\*/|//[^\n]*|/'
+    if t.value == '/':
+        t.type = 'DIVIDE'
+        return t
+    # comentario
     t.lexer.lineno += t.value.count('\n')
     pass
 
@@ -84,6 +83,12 @@ def t_INT_VALUE(t):
     r'0b[01]+|0x[0-9A-F]+|0[0-7]+|0|[1-9][0-9]*'
     # t.value = int(t.value)
     return t
+
+def t_BAD_CHAR(t):
+    r"\'([^\\\n\']|\\.){2,}\'"
+    print(f"ERROR: literal char inválido {t.value} en línea {t.lineno}")
+    # lo ignoras y sigues
+    pass
 
 def t_CHAR_VALUE(t):
     r"\'([^\\\n\']|\\.)\'"
