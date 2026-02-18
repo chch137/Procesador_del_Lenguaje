@@ -70,7 +70,6 @@ def t_DIVIDE_OR_COMMENT(t):
     if t.value == '/':
         t.type = 'DIVIDE'
         return t
-    # comentario
     t.lexer.lineno += t.value.count('\n')
     pass
 
@@ -84,15 +83,28 @@ def t_INT_VALUE(t):
     # t.value = int(t.value)
     return t
 
-def t_BAD_CHAR(t):
+"""def t_BAD_CHAR(t):
     r"\'([^\\\n\']|\\.){2,}\'"
     print(f"ERROR: literal char inválido {t.value} en línea {t.lineno}")
     # lo ignoras y sigues
+    pass"""
+
+"""def t_CHAR_VALUE(t):
+    r"\'([^\\\n\']|\\.)\'"
+    return t"""
+
+def t_BAD_CHAR(t):
+    r"'[^\n']{2,}'"
+    print(f"ERROR: literal char inválido {t.value} en línea {t.lineno}")
     pass
 
 def t_CHAR_VALUE(t):
-    r"\'([^\\\n\']|\\.)\'"
-    return t
+    r"'[^\n']'"
+    ch = t.value[1]
+    if ord(ch) > 255:
+        print(f"ERROR: char fuera de ASCII-extendido {t.value} en línea {t.lineno}")
+    else:
+        return t
 
 def t_ID(t):
     r'[A-Za-z_]\w*'
