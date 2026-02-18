@@ -36,6 +36,6 @@ Thumbs.db
 # === Logs ===
 *.log
 
-# === Logs ===
-input.txt
+# === inputs && outputs ===
+# input.txt
 input.token

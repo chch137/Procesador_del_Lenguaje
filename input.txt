@@ -1,0 +1,85 @@
+// ====== KEYWORDS + TIPOS + IDS ======
+int x = 495;
+float y = 100.001;
+char c = 'A';
+boolean ok = true;
+boolean ko = false;
+void main() {
+    // ====== INTS: decimal / bin / oct / hex ======
+    int d1 = 0;
+    int d2 = 7;
+    int d3 = 12345;
+
+    int b1 = 0b1;
+    int b2 = 0b101010;
+
+    int o1 = 0757;
+    int o2 = 0123;
+
+    int h1 = 0x1F;
+    int h2 = 0xFF;
+    int h3 = 0x10A;
+
+    // ====== FLOATS: normal + científica ======
+    float f1 = 9.87e-2;
+    float f2 = 5e5;
+    float f3 = 10.5;
+    float f4 = 1.0e+3;
+
+    // ====== OPERADORES ======
+    x = x + 1;
+    x = x - 2;
+    x = x * 3;
+    x = x / 4;
+
+    ok = (x >= 10) && (x <= 100) || !false;
+    ok = (x > 0) && (x < 10) || (x == 7);
+
+    // ====== SEPARADORES / BLOQUES / COMAS / PUNTO Y COMA ======
+    print(x);
+    print(y);
+    print(c);
+
+    // ====== DOT (acceso) + NEW + RECORD ======
+    record Person {
+        int age;
+        float height;
+    }
+
+    Person p = new Person;
+    p.age = 20;
+    p.height = 1.80;
+
+    // ====== CONTROL FLOW: IF/ELSE/DO/WHILE/RETURN ======
+    if (ok) {
+        print('Y');
+    } else {
+        print('N');
+    }
+
+    do {
+        x = x + 1;
+    } while (x < 5);
+
+    return;
+}
+
+/* ====== COMENTARIO MULTILÍNEA ======
+   Debe ignorarse completo
+   Incluye símbolos: + - * / && || == <= >= { } ( ) ; , .
+*/
+print(0);
+
+/* ====== CASOS DE FALLO (deberían disparar t_error) ====== */
+@            // carácter ilegal
+#            // carácter ilegal
+$            // carácter ilegal
+
+/* estos también suelen ser “fallos” según la spec/tu regex */
+int bad1 = 012;      // esto en tu lexer será OCTAL (no decimal). OJO.
+int bad2 = 0b102;    // aquí tu lexer tokeniza 0b10 como INT_VALUE y luego '2' como INT_VALUE, no error
+int bad3 = 0x1f;     // '0x1' INT_VALUE y 'f' ID (porque hex solo A-F)
+float bad4 = 10.;    // '10' INT_VALUE + '.' DOT (y luego ';'), no float
+float bad5 = .5;     // '.' DOT + '5' INT_VALUE
+char bad6 = 'AB';    // probablemente 'A' CHAR_VALUE? (no, por tu regex debería fallar) y luego B...
+char bad7 = '\n';    // según tu CHAR_VALUE lo acepta como escape \\.
