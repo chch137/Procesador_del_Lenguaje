@@ -36,10 +36,7 @@ tokens = reserved + (
     'COMMA','SEMICOLON',
 )
 
-
-reserved_map = {}
-for r_type in reserved:
-    reserved_map[r_type.lower()] = r_type
+reserved_map = {r.lower(): r for r in reserved}
 
 t_PLUS = r'\+'
 t_MINUS = r'-'
@@ -80,12 +77,12 @@ def t_comment_multi(t):
 
 def t_FLOAT_VALUE(t):
     r'(\d+(\.\d+)?e[+-]?\d+)|(\d+\.\d+)'
-    t.value = float(t.value)
+    # t.value = float(t.value)
     return t
 
 def t_INT_VALUE(t):
     r'0b[01]+|0x[0-9A-F]+|0[0-7]+|0|[1-9][0-9]*'
-    t.value = int(t.value)
+    # t.value = int(t.value)
     return t
 
 def t_CHAR_VALUE(t):
@@ -102,7 +99,7 @@ def t_newline(t):
     t.lexer.lineno += t.value.count('\n')
 
 def t_error(t):
-    print(f"Illegal character at {t.lineo} with {t.value}")
+    print(f"Illegal character at {t.lineo[0]} with {t.value}")
     t.lexer.skip(1)
 
 lexer = lex.lex()
