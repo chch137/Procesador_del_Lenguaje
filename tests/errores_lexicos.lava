@@ -1,0 +1,18 @@
+// Caracteres ilegales
+@ # $
+
+// Char inválido (más de 1 carácter)
+char bad1 = 'AB';
+
+// Char fuera de ASCII-extendido (emoji)
+char bad2 = '😀';
+
+// Hex inválido según enunciado (minúscula)
+int bad3 = 0x1f;
+
+// Binario inválido (esto se partirá en tokens, no siempre da error léxico)
+int bad4 = 0b102;
+
+// Estos NO son floats válidos según spec (se partirán como INT/DOT)
+float bad5 = 10.;
+float bad6 = .5;

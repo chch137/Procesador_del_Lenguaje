@@ -109,7 +109,7 @@ def t_CHAR_VALUE(t):
     r"'[^\n']'"
     ch = t.value[1]
     if ord(ch) > 255:
-        print(f"ERROR: char fuera de ASCII-extendido {t.value} en línea {t.lineno}")
+        print(f"ERROR: char fuera de ASCII-extendido en línea {t.lineno}")
         return
     return t
 
