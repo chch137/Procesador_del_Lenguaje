@@ -79,6 +79,11 @@ def t_FLOAT_VALUE(t):
     t.value = float(t.value)
     return t
 
+"""def t_BAD_HEX(t):
+    r'0x[0-9A-F]+[a-z][A-Za-z0-9_]*'
+    print(f"ERROR: hexadecimal inválido {t.value} en línea {t.lineno} (solo A-F mayúsculas)")
+    pass"""
+
 def t_INT_VALUE(t):
     r'0b[01]+|0x[0-9A-F]+|0[0-7]+|0|[1-9][0-9]*'
     t.raw = t.value  # lexema original
