@@ -39,3 +39,4 @@ Thumbs.db
 # === inputs && outputs ===
 # input.txt
 input.token
+*.token
