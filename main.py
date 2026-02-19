@@ -22,8 +22,10 @@ def main():
     with open(out_path, 'w', encoding='utf-8') as out:
         for tok in iter(lexer.token, None):
             col_start = find_column(data, tok.lexpos)
-            col_end = col_start + len(tok.value)
-            out.write(f"{tok.type}, {tok.value}, {tok.lineno}, {col_start}, {col_end}\n")
+            lexeme = getattr(tok, "raw", tok.value)
+            col_end = col_start + len(str(lexeme))
+            out.write(f"{tok.type}, {lexeme}, {tok.lineno}, {col_start}, {col_end}\n")
+
 
 if __name__ == "__main__":
     main()

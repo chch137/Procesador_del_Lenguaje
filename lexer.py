@@ -62,7 +62,7 @@ t_RBRACE = r'\}'
 t_COMMA = r','
 t_SEMICOLON = r';'
 
-t_ignore = ' \t'
+t_ignore = ' \t\r'
 
 
 def t_DIVIDE_OR_COMMENT(t):
@@ -75,23 +75,25 @@ def t_DIVIDE_OR_COMMENT(t):
 
 def t_FLOAT_VALUE(t):
     r'(\d+(\.\d+)?e[+-]?\d+)|(\d+\.\d+)'
-    # t.value = float(t.value)
+    t.raw = t.value
+    t.value = float(t.value)
     return t
 
 def t_INT_VALUE(t):
     r'0b[01]+|0x[0-9A-F]+|0[0-7]+|0|[1-9][0-9]*'
-    # t.value = int(t.value)
+    t.raw = t.value  # lexema original
+
+    s = t.value
+    if s.startswith('0b'):
+        t.value = int(s[2:], 2)
+    elif s.startswith('0x'):
+        t.value = int(s[2:], 16)
+    elif s.startswith('0') and s != '0':
+        t.value = int(s, 8)
+    else:
+        t.value = int(s, 10)
+
     return t
-
-"""def t_BAD_CHAR(t):
-    r"\'([^\\\n\']|\\.){2,}\'"
-    print(f"ERROR: literal char inválido {t.value} en línea {t.lineno}")
-    # lo ignoras y sigues
-    pass"""
-
-"""def t_CHAR_VALUE(t):
-    r"\'([^\\\n\']|\\.)\'"
-    return t"""
 
 def t_BAD_CHAR(t):
     r"'[^\n']{2,}'"
@@ -103,11 +105,11 @@ def t_CHAR_VALUE(t):
     ch = t.value[1]
     if ord(ch) > 255:
         print(f"ERROR: char fuera de ASCII-extendido {t.value} en línea {t.lineno}")
-    else:
-        return t
+        return
+    return t
 
 def t_ID(t):
-    r'[A-Za-z_]\w*'
+    r'[A-Za-z_][A-Za-z0-9_]*'
     t.type = reserved_map.get(t.value, 'ID') # Funciona correctamente
     return t
 
