@@ -17,7 +17,8 @@ reserved = (
     'WHILE',
     'PRINT',
     'NEW',
-    'RECORD'
+    'RECORD',
+    'BREAK'
 ) # Esta correcto
 
 tokens = reserved + (
